@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  This file conforms to the DTD xdc/bld/build.dtd -->
+<package name="ce_api" version="" producerId="undefined">
+    <units>
+    </units>
+    <sources>
+        <srcFile name="package/cfg/ce_api_pv5T.c"/>
+    </sources>
+    <configscripts>
+        <srcFile name="/home/daniel/vrm-demos-d3-4.3.3/demos/advanced/arm-dsp/directfb_viewer_d3/ce_api/ce_api.cfg"/>
+    </configscripts>
+    <makefiles>
+        <srcFile name="package.mak" src="package.bld"/>
+        <srcFile name="package/package.xdc.dep" src="package.xdc"/>
+        <srcFile name="package/cfg/ce_api_pv5T.mak" src="package.bld"/>
+        <srcFile name="package/cfg/ce_api_pv5T.ov5T.dep" src="package/cfg/ce_api_pv5T.c"/>
+        <srcFile name="package/cfg/ce_api_pv5T.dep" src="package/cfg/ce_api_pv5T.cfg"/>
+        <srcFile name="package/cfg/ce_api.xv5T.mak" src="package.bld"/>
+        <srcFile name="package/rel/ce_api.tar.dep" src="package/rel/ce_api.xdc.inc"/>
+    </makefiles>
+    <targets>
+        <target name="gnu.targets.arm.GCArmv5T"
+            version="gnu.targets.arm.GCArmv5T{1,0,4.6"
+            platform="host.platforms.arm"
+            isa="v5T"
+            suffix="v5T"
+            rootDir="/usr"
+            os="Linux"
+            rts="gnu.targets.arm.rtsv5T">
+            <model endian="little"
+                codeModel="undefined"
+                dataModel="undefined"/>
+        </target>
+    </targets>
+    <libraries>
+    </libraries>
+    <configurations>
+    <configuration name="ce_api"
+        pname="ce_api.pv5T"
+        target="gnu.targets.arm.GCArmv5T"
+        platform="ti.platforms.evmTI814X"
+        profile="release"
+        isPartial="false"
+        xCfgScript="package/cfg/ce_api_pv5T.cfg"
+        xCfgPrefix="package/cfg/ce_api_pv5T"
+        cfgScript="/home/daniel/vrm-demos-d3-4.3.3/demos/advanced/arm-dsp/directfb_viewer_d3/ce_api/ce_api.cfg"
+        cfgArgs="null"
+        />
+    </configurations>
+    <executables>
+    <executable name="ce_api"
+        pname="ce_api.xv5T"
+        target="gnu.targets.arm.GCArmv5T"
+        platform="ti.platforms.evmTI814X"
+        profile="release"
+        xCfgScript="package/cfg/ce_api_pv5T.cfg"
+        xCfgPrefix="package/cfg/ce_api_pv5T"
+        cfgScript="/home/daniel/vrm-demos-d3-4.3.3/demos/advanced/arm-dsp/directfb_viewer_d3/ce_api/ce_api.cfg"
+        cfgArgs="null"
+        />
+    </executables>
+    <tests>
+    <test exeName="ce_api.xv5T"
+        args=""
+        groupName="ce_api.xv5T"
+        refOutput="undefined"
+        refExitCode="0"
+        execArgs=""
+        />
+    </tests>
+    <releases relDir="package/rel/">
+    <release name="ce_api"
+        pname="ce_api.tar"
+        label="default"
+    >
+        <file name="package/package.bld.xml"/>
+        <file name="package/package.ext.xml"/>
+        <file name="package/package.rel.dot"/>
+        <file name="package/build.cfg"/>
+        <file name="package/package.xdc.inc"/>
+    </release>
+    </releases>
+    <repositories>
+    </repositories>
+</package>

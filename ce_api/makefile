@@ -1,0 +1,138 @@
+# 
+#  Copyright (c) 2012, Texas Instruments Incorporated
+#  All rights reserved.
+#
+#  Redistribution and use in source and binary forms, with or without
+#  modification, are permitted provided that the following conditions
+#  are met:
+#
+#  *  Redistributions of source code must retain the above copyright
+#     notice, this list of conditions and the following disclaimer.
+#
+#  *  Redistributions in binary form must reproduce the above copyright
+#     notice, this list of conditions and the following disclaimer in the
+#     documentation and/or other materials provided with the distribution.
+#
+#  *  Neither the name of Texas Instruments Incorporated nor the names of
+#     its contributors may be used to endorse or promote products derived
+#     from this software without specific prior written permission.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+#  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+#  THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+#  PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+#  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+#  EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+#  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+#  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+#  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+#  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+#  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+# 
+#
+#  ======== makefile ========
+#  GNUmake-based makefile
+#
+
+# This file describes the build for a generic Linux application that
+# uses Codec Engine. This makefile has special sections to
+# accomodate inclusion of the codec engine, while the rest is standard.
+# Codec Engine-specific additions are marked with the [CE] tag.
+
+#include VRmagic specific paths and definitions 
+include ../xdcpaths.mak
+
+# Note, the *_V5T vars are for Linux GCC tools, the *_BNC are for Android
+CGTOOLS_V5T ?= /usr
+CC_V5T      ?= bin/arm-linux-gnueabihf-gcc
+gnu.targets.arm.GCArmv5T ?= $(CGTOOLS_V5T);LONGNAME=$(CC_V5T);profiles.release.compileOpts.copts=-O2 -ffunction-sections -marm -pthread
+
+XDCARGS= \
+    DEVICE=\"$(DEVICE)\" \
+    PROGRAMS=\"$(PROGRAMS)\" \
+    GPPOS=\"$(GPPOS)\" \
+    ti.targets.C64P=\"$(ti.targets.C64P)\" \
+    ti.targets.C674=\"$(ti.targets.C674)\" \
+    ti.targets.arm.elf.M3=\"$(ti.targets.arm.elf.M3)\" \
+    ti.targets.elf.C64P=\"$(ti.targets.elf.C64P)\" \
+    ti.targets.elf.C64T=\"$(ti.targets.elf.C64T)\" \
+    ti.targets.elf.C66=\"$(ti.targets.elf.C66)\" \
+    ti.targets.elf.C674=\"$(ti.targets.elf.C674)\" \
+    gnu.targets.arm.GCArmv5T=\"$(gnu.targets.arm.GCArmv5T)\" \
+    google.targets.arm.Bionic=\"$(google.targets.arm.Bionic)\"
+
+
+# [CE] add the examples repository to the package path.
+# This is necessary because this application's configuration uses the codecs
+# in the examples repository
+XDC_PATH := $(XDC_PATH);../;
+
+# The compiler path and name are read from xdcpaths.mak above
+CGTOOLS = $(CGTOOLS_V5T)
+
+# compiler, linker
+CC = $(CGTOOLS)/$(CC_V5T)
+LD = $(subst gcc,ld,$(CC))
+AR = $(subst gcc,ar,$(CC))
+
+
+# [CE] Configuro settings.  CONFIGPKG is the basename of your application's
+# config script
+CONFIGPKG = ce_api
+CONFIG_BLD := $(CE_INSTALL_DIR)/codec_engine.bld
+
+# [CE] Name the xdc target and platform
+#XDCTARGET = $(CGTARGET)
+XDCTARGET = gnu.targets.arm.GCArmv5T
+XDCPLATFORM = ti.platforms.evmTI814X
+
+
+# [CE] configuro-generated files
+COMPILER_FILE = $(CONFIGPKG)/compiler.opt
+LINKER_FILE = $(CONFIGPKG)/linker.cmd
+
+# [CE] The path to the configuro utility
+CONFIGURO = XDCPATH="$(XDC_PATH)" XDCARGS="$(XDCARGS)" $(XDC_INSTALL_DIR)/xs xdc.tools.configuro
+
+# [CE] Augment the standard $(CPPFLAGS) variable, adding the
+# Configuro-generated compiler file.
+CPPFLAGS +=  $(shell cat $(COMPILER_FILE)) -Wall -O2 -marm -pthread
+
+all: configured_CE_subsystem.o libce_api.a makefile
+
+# [CE] The generated linker and compiler files depend on the generated
+# config package
+$(LINKER_FILE) $(COMPILER_FILE) : $(CONFIGPKG)
+
+# [CE] The generated config package depends on the 2 config scripts
+$(CONFIGPKG) : $(CONFIGPKG).cfg
+	$(CONFIGURO) -c $(CGTOOLS) -o $(CONFIGPKG) \
+		-t $(XDCTARGET) -p $(XDCPLATFORM) \
+		-b $(CONFIG_BLD) $(CONFIGPKG).cfg
+
+# "normal" makefile settings and rules follow, with some additions for CE
+# This app consists of the main, codec-engine unrelated main.c file, and
+# the codec-engine-using app.c file.
+%.o : %.cpp $(COMPILER_FILE)
+	$(CC) -c $(CPPFLAGS) $(CFLAGS) $(VRM_INCPATH) -I.. -o $@ $<
+
+# [CE] link configured CE-using app and all CE libraries it requires (but no others)
+# into a partially linked object file, configured_CE_subsystem.o
+# configured_CE_subsystem.o builds with the "-r" switch for partial linking, and
+# includes .o and .lib files listed in the configuration-produced $(LINKER_FILE).
+configured_CE_subsystem.o: ce_api.o $(LINKER_FILE)
+	$(LD) -T $(LINKER_FILE) -r -o $@ ce_api.o
+
+libce_api.a: configured_CE_subsystem.o
+	$(AR) rc $@ $^
+
+
+# clean rule; must be a :: rule because CE's xdccfg.mak defines clean::, too
+clean:
+	@echo "### Cleaning dualcpu_separateconfig/configured_CE_subsystem..."
+	rm -rf *.o $(CONFIGPKG) *.a 
+#
+#  @(#) ti.sdo.ce.examples.apps.video_copy; 1, 0, 0,1; 2-24-2012 19:28:37; /db/atree/library/trees/ce/ce-t06/src/ xlibrary
+
+#
+

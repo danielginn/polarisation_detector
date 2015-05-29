@@ -1,0 +1,95 @@
+/*
+ *  ======== config.bld ========
+ *  This script is run prior to all build scripts.  It initializes the
+ *  rootDir configuration parameter of all supported targets.
+ *
+ *  There are more details about config.bld here:
+ *  http://rtsc.eclipse.org/docs-tip/Glossary#config.bld
+ */
+
+var Build = xdc.useModule('xdc.bld.BuildEnvironment');
+var Pkg = xdc.useModule('xdc.bld.PackageContents');
+
+/* initialize local vars with those set in xdcpaths.mak (via XDCARGS) */
+for (x = 0; x < arguments.length; x++) {
+    if (arguments[x].match(/^CODEGEN_INSTALL_DIR=/)) {
+        cgRootDir = arguments[x].split("=")[1];
+    }
+}
+
+/* 364MB for Linux*/
+var mem_ext = [
+["DDR3_HOST", {
+    comment:    "DDR3 Memory reserved for use by the A8",
+    name:       "DDR3_HOST",
+    base:       0x80000000,
+    len:        0x16C00000,
+    }
+],
+/* first 128MB for HEAP (dynamic memory allocation)*/
+["DDRALGHEAP", {
+    comment:    "DDRALGHEAP: off-chip memory for dynamic allocation",
+    name:       "DDRALGHEAP",
+    base:       0xF0000000,
+    len:        0x08000000,
+    }
+],
+/* the last 256MB of 2048MB for the DSP*/
+/* 2nd 128MB for application code and data */
+["DDR3", {
+    comment:    "DDR3 Memory reserved for use by the C674",
+    name:       "DDR3",
+    base:       0xF8000000,
+    len:        0x08000000,
+    }
+],
+/*  IPC_SR_MC_HDVICP2_HDVPSS */
+["DDR3_SR1", {
+    comment:    "DDR3 Memory reserved for use by SharedRegion 1",
+    name:       "DDR3_SR1",
+    base:       0x99400000, /* oder 0x99400000 ?? -> EZSDK Memory Map!!*/
+    len:        0x00100000, /* 1 MB */
+    }
+],
+/* wirklich gebraucht?*/
+["DDR3_SR0", {
+    comment: "DDR3 Memory reserved for use by SharedRegion 0",
+    name: "DDR3_SR0",
+    base: 0x9F700000,
+    len:  0x00200000    /* 2 MB */
+    }
+],
+];
+
+/* platform instances used by this package */
+Build.platformTable["ti.platforms.evmDM8148"] = {
+    externalMemoryMap: mem_ext,
+    l1DMode:"32k",
+    l1PMode:"32k",
+    l2Mode:"128k",            
+    codeMemory: "DDR3",
+    dataMemory: "DDR3",
+    stackMemory: "DDR3"
+};
+
+/* should test here that cgRootDir is set! */
+
+var C674 = xdc.useModule('ti.targets.elf.C674');
+C674.rootDir = cgRootDir;
+
+C674.platforms = [
+    "ti.platforms.evmDM8148"
+];
+
+$trace("Adding ti.targets.elf.C674 to Build.targets", 1, ['genserver']);
+Build.targets.$add(C674);
+
+/* We remove a few profiles, just to cut down on build time */
+delete C674.profiles["debug"];
+delete C674.profiles["coverage"];
+delete C674.profiles["profile"];
+delete C674.profiles["whole_program"];
+delete C674.profiles["whole_program_debug"];
+
+/* Create a .zip file for redistribution.  Remove this line if you prefer .tar */
+Pkg.attrs.archiver = 'zip';

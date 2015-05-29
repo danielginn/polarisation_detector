@@ -1,0 +1,46 @@
+server.zip: bin/server.xe674
+bin/server.xe674:
+server.zip: config.bld
+config.bld:
+server.zip: link.cmd
+link.cmd:
+server.zip: main.c
+main.c:
+server.zip: makefile
+makefile:
+server.zip: package/.vers_b150
+package/.vers_b150:
+server.zip: package/.vers_g180
+package/.vers_g180:
+server.zip: package/.vers_r170
+package/.vers_r170:
+server.zip: package/.xdc-y25
+package/.xdc-y25:
+server.zip: package/build.cfg
+package/build.cfg:
+server.zip: package/package.bld.xml
+package/package.bld.xml:
+server.zip: package/package.defs.h
+package/package.defs.h:
+server.zip: package/package.ext.xml
+package/package.ext.xml:
+server.zip: package/package.rel.dot
+package/package.rel.dot:
+server.zip: package/package_server.c
+package/package_server.c:
+server.zip: package/server.ccs
+package/server.ccs:
+server.zip: package/server.class
+package/server.class:
+server.zip: package/server.java
+package/server.java:
+server.zip: package/server.sch
+package/server.sch:
+server.zip: package.bld
+package.bld:
+server.zip: package.xdc
+package.xdc:
+server.zip: package.xs
+package.xs:
+server.zip: server.cfg
+server.cfg:

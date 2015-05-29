@@ -1,0 +1,256 @@
+/*
+ * Do not modify this file; it is automatically generated from the template
+ * linkcmd.xdt in the ti.targets.elf package and will be overwritten.
+ */
+
+/*
+ * put '"'s around paths because, without this, the linker
+ * considers '-' as minus operator, not a file name character.
+ */
+
+
+-l"/opt/vrmagic/sdk-4.3.3/D3/dsp/vrmcodec/lib/release/vrmcodec.ae674"
+-l"/opt/vrmagic/vrm-d3-ezsdk/component-sources/codec_engine_3_22_01_06/packages/ti/sdo/ce/image1/lib/release/imgdec1.ae674"
+-l"/opt/vrmagic/vrm-d3-ezsdk/component-sources/codec_engine_3_22_01_06/packages/ti/sdo/ce/image1/lib/release/imgenc1.ae674"
+-l"/opt/vrmagic/vrm-d3-ezsdk/component-sources/codec_engine_3_22_01_06/packages/ti/sdo/ce/lib/release/ce.ae674"
+-l"/opt/vrmagic/vrm-d3-ezsdk/component-sources/codec_engine_3_22_01_06/packages/ti/sdo/ce/ipc/bios/lib/release/ipc_bios.ae674"
+-l"/opt/vrmagic/vrm-d3-ezsdk/component-sources/syslink_2_20_02_20/packages/ti/syslink/ipc/rtos/lib/release/ti.syslink.ipc.rtos.ae674"
+-l"/opt/ti/ti-ezsdk-5_05_02_00/component-sources/ipc_1_24_03_32/packages/ti/sdo/ipc/lib/instrumented_e674/ipc/ipc.lib"
+-l"/opt/vrmagic/vrm-d3-ezsdk/component-sources/codec_engine_3_22_01_06/packages/ti/sdo/ce/alg/lib/release/Algorithm_BIOS.ae674"
+-l"/opt/vrmagic/vrm-d3-ezsdk/component-sources/codec_engine_3_22_01_06/packages/ti/sdo/ce/osal/bios/lib/release/osal.ae674"
+-l"/opt/vrmagic/vrm-d3-ezsdk/component-sources/codec_engine_3_22_01_06/packages/ti/sdo/ce/osal/lib/release/osal.ae674"
+-l"/opt/vrmagic/vrm-d3-ezsdk/component-sources/codec_engine_3_22_01_06/packages/ti/sdo/ce/utils/syscbuf/lib/release/syscbuf.ae674"
+-l"/opt/vrmagic/vrm-d3-ezsdk/component-sources/osal_1_22_01_09/packages/ti/sdo/utils/loggers/lib/release/loggers.ae674"
+-l"/opt/vrmagic/vrm-d3-ezsdk/component-sources/codec_engine_3_22_01_06/packages/ti/sdo/ce/node/lib/release/node.ae674"
+-l"/opt/vrmagic/vrm-d3-ezsdk/component-sources/codec_engine_3_22_01_06/packages/ti/sdo/ce/utils/xdm/lib/release/XdmUtils.ae674"
+-l"/opt/vrmagic/vrm-d3-ezsdk/component-sources/codec_engine_3_22_01_06/packages/ti/sdo/ce/global/lib/release/cesettings.ae674"
+-l"/opt/vrmagic/vrm-d3-ezsdk/component-sources/framework_components_3_22_01_07/packages/ti/sdo/fc/rman/lib/release/rman.ae674"
+-l"/opt/vrmagic/vrm-d3-ezsdk/component-sources/framework_components_3_22_01_07/packages/ti/sdo/fc/dskt2/lib/release/dskt2.ae674"
+-l"/opt/vrmagic/vrm-d3-ezsdk/component-sources/framework_components_3_22_01_07/packages/ti/sdo/fc/utils/osalsupport/lib/release/osal_support.ae674"
+-l"/opt/vrmagic/vrm-d3-ezsdk/component-sources/framework_components_3_22_01_07/packages/ti/sdo/fc/global/lib/release/fcsettings.ae674"
+-l"/opt/vrmagic/vrm-d3-ezsdk/component-sources/framework_components_3_22_01_07/packages/ti/sdo/fc/ires/nullresource/lib/release/nullres.ae674"
+-l"/opt/ti/ti-ezsdk-5_05_02_00/component-sources/bios_6_33_05_46/packages/ti/sysbios/lib/instrumented_e674/sysbios/sysbios.lib"
+-l"/opt/ti/ti-ezsdk-5_05_02_00/component-sources/xdctools_3_23_03_53/packages/ti/targets/rts6000/lib/ti.targets.rts6000.ae674"
+-l"/opt/ti/ti-ezsdk-5_05_02_00/component-sources/xdctools_3_23_03_53/packages/ti/targets/rts6000/lib/boot.ae674"
+
+--retain="*(xdc.meta)"
+
+
+--args 0x0
+-heap  0x0
+-stack 0x1000
+
+MEMORY
+{
+    IRAM (RWX) : org = 0x10800000, len = 0x20000
+    OCMC (RWX) : org = 0x40300000, len = 0x20000
+    DDR3_HOST : org = 0x80000000, len = 0x16c00000
+    DDRALGHEAP : org = 0xf0000000, len = 0x8000000
+    DDR3 : org = 0xf8000000, len = 0x8000000
+    DDR3_SR1 : org = 0x99400000, len = 0x100000
+    DDR3_SR0 : org = 0x9f700000, len = 0x200000
+}
+
+/*
+ * Linker command file contributions from all loaded packages:
+ */
+
+/* Content from xdc.services.global (null): */
+
+/* Content from xdc (null): */
+
+/* Content from xdc.corevers (null): */
+
+/* Content from xdc.shelf (null): */
+
+/* Content from xdc.services.spec (null): */
+
+/* Content from xdc.services.intern.xsr (null): */
+
+/* Content from xdc.services.intern.gen (null): */
+
+/* Content from xdc.services.intern.cmd (null): */
+
+/* Content from xdc.bld (null): */
+
+/* Content from ti.targets (null): */
+
+/* Content from ti.targets.elf (null): */
+
+/* Content from xdc.rov (null): */
+
+/* Content from xdc.runtime (null): */
+
+/* Content from ti.targets.rts6000 (null): */
+
+/* Content from ti.sysbios.interfaces (null): */
+
+/* Content from ti.sysbios.family (null): */
+
+/* Content from xdc.runtime.knl (null): */
+
+/* Content from ti.sdo.ipc.family (null): */
+
+/* Content from ti.sdo.ipc.interfaces (null): */
+
+/* Content from ti.sysbios (null): */
+
+/* Content from ti.sysbios.hal (null): */
+
+/* Content from ti.sysbios.knl (null): */
+
+/* Content from ti.sysbios.family.c64p (null): */
+
+/* Content from ti.sysbios.gates (null): */
+
+/* Content from ti.sysbios.heaps (null): */
+
+/* Content from ti.sysbios.xdcruntime (null): */
+
+/* Content from ti.sdo.utils (null): */
+
+/* Content from ti.sysbios.syncs (null): */
+
+/* Content from ti.sysbios.timers.dmtimer (null): */
+
+/* Content from xdc.services.getset (null): */
+
+/* Content from ti.sysbios.family.c62 (null): */
+
+/* Content from ti.sysbios.family.c64p.ti81xx (null): */
+
+/* Content from ti.xdais (null): */
+
+/* Content from ti.sdo.fc.ires (null): */
+
+/* Content from ti.sdo.fc.ires.nullresource (null): */
+
+/* Content from ti.sdo.fc.global (null): */
+
+/* Content from ti.sdo.fc.utils.osalsupport (null): */
+
+/* Content from ti.sdo.fc.dskt2 (null): */
+
+/* Content from ti.sdo.fc.rman (null): */
+
+/* Content from ti.sdo.ce.global (null): */
+
+/* Content from ti.xdais.dm (null): */
+
+/* Content from ti.sdo.ce.utils.xdm (null): */
+
+/* Content from ti.sdo.ce.node (null): */
+
+/* Content from ti.sdo.utils.loggers (null): */
+
+/* Content from ti.sdo.ce.utils.syscbuf (null): */
+
+/* Content from ti.sysbios.utils (null): */
+
+/* Content from ti.catalog.c6000 (null): */
+
+/* Content from ti.catalog (null): */
+
+/* Content from ti.catalog.peripherals.hdvicp2 (null): */
+
+/* Content from xdc.platform (null): */
+
+/* Content from xdc.cfg (null): */
+
+/* Content from ti.catalog.arm.peripherals.timers (null): */
+
+/* Content from ti.catalog.arm.cortexm3 (null): */
+
+/* Content from ti.catalog.arm.cortexa8 (null): */
+
+/* Content from ti.platforms.evmDM8148 (null): */
+
+/* Content from ti.sdo.ce.osal (null): */
+
+/* Content from ti.sdo.ce.osal.bios (null): */
+
+/* Content from ti.sdo.ce.ipc (null): */
+
+/* Content from ti.sdo.ce.alg (null): */
+
+/* Content from ti.sdo.ipc (ti/sdo/ipc/linkcmd.xdt): */
+
+SECTIONS
+{
+    ti.sdo.ipc.SharedRegion_0:  { . += 0x200000;} run > 0x9f700000, type = NOLOAD
+
+    ti_sdo_ipc_init: load > DDR3, type = NOINIT 
+}
+
+
+/* Content from ti.sdo.ipc.transports (null): */
+
+/* Content from ti.sdo.ipc.family.ti81xx (null): */
+
+/* Content from ti.sdo.ipc.notifyDrivers (null): */
+
+/* Content from ti.sdo.ipc.nsremote (null): */
+
+/* Content from ti.sdo.ipc.heaps (null): */
+
+/* Content from ti.sdo.ipc.gates (null): */
+
+/* Content from ti.syslink.ipc.rtos (ti/syslink/ipc/rtos/linkcmd.xdt): */
+
+
+        -eti_sysbios_family_c64p_Hwi0
+
+/* Add the flags needed for SysLink ELF build. */
+    --dynamic
+    --retain=_Ipc_ResetVector
+
+/* Content from ti.sdo.ce.ipc.dsplink.dsp (null): */
+
+/* Content from ti.sdo.ce.ipc.bios (null): */
+
+/* Content from ti.sdo.ce (null): */
+
+/* Content from ti.sdo.ce.image1 (null): */
+
+/* Content from dsp.vrmcodec (null): */
+
+/* Content from server (null): */
+
+
+/*
+ * symbolic aliases for static instance objects
+ */
+xdc_runtime_Startup__EXECFXN__C = 1;
+xdc_runtime_Startup__RESETFXN__C = 1;
+TSK_idle = ti_sysbios_knl_Task_Object__table__V + 0;
+
+SECTIONS
+{
+    .text: load >> DDR3
+    .ti.decompress: load > DDR3
+    .stack: load > DDR3
+    GROUP: load > DDR3
+    {
+        .bss:
+        .neardata:
+        .rodata:
+    }
+    .cinit: load > DDR3
+    .pinit: load >> DDR3
+    .init_array: load > DDR3
+    .const: load >> DDR3
+    .data: load >> DDR3
+    .fardata: load >> DDR3
+    .switch: load >> DDR3
+    .sysmem: load > DDR3
+    .far: load >> DDR3
+    .args: load > DDR3 align = 0x4, fill = 0 {_argsize = 0x0; }
+    .cio: load >> DDR3
+    .ti.handler_table: load > DDR3
+    .EXT_HEAP: load >> DDR3
+    .INT_HEAP: load >> IRAM
+    .EXTALG_HEAP: load >> DDRALGHEAP
+    .vecs: load >> DDR3
+    xdc.meta: load >> DDR3, type = COPY
+
+}

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  This file conforms to the DTD xdc/bld/build.dtd -->
+<package name="server" version="1, 0, 0" producerId="undefined">
+    <units>
+    </units>
+    <sources>
+        <srcFile name="package/cfg/bin/server_pe674.c"/>
+        <srcFile name="main.c"/>
+    </sources>
+    <configscripts>
+        <srcFile name="server.cfg"/>
+    </configscripts>
+    <makefiles>
+        <srcFile name="package.mak" src="package.bld"/>
+        <srcFile name="package/package.xdc.dep" src="package.xdc"/>
+        <srcFile name="package/cfg/bin/server_pe674.mak" src="package.bld"/>
+        <srcFile name="package/cfg/bin/server_pe674.oe674.dep" src="package/cfg/bin/server_pe674.c"/>
+        <srcFile name="package/cfg/bin/server_pe674.dep" src="package/cfg/bin/server_pe674.cfg"/>
+        <srcFile name="package/cfg/bin/server.xe674.mak" src="package.bld"/>
+        <srcFile name="package/cfg/bin/server/main.oe674.dep" src="main.c"/>
+        <srcFile name="package/rel/server.zip.dep" src="package/rel/server.xdc.inc"/>
+    </makefiles>
+    <targets>
+        <target name="ti.targets.elf.C674"
+            version="ti.targets.elf.C674{1,0,7.3,4"
+            platform="ti.platforms.evmDA830"
+            isa="674"
+            suffix="e674"
+            rootDir="/opt/vrmagic/vrm-d3-ezsdk/dsp-devkit/cgt6x_7_3_4"
+            os="undefined"
+            rts="ti.targets.rts6000">
+            <model endian="little"
+                codeModel="undefined"
+                dataModel="undefined"/>
+        </target>
+    </targets>
+    <libraries>
+    </libraries>
+    <configurations>
+    <configuration name="bin/server"
+        pname="bin/server.pe674"
+        target="ti.targets.elf.C674"
+        platform="ti.platforms.evmDM8148"
+        profile="release"
+        isPartial="false"
+        xCfgScript="package/cfg/bin/server_pe674.cfg"
+        xCfgPrefix="package/cfg/bin/server_pe674"
+        cfgScript="server.cfg"
+        />
+    </configurations>
+    <executables>
+    <executable name="bin/server"
+        pname="bin/server.xe674"
+        target="ti.targets.elf.C674"
+        platform="ti.platforms.evmDM8148"
+        profile="release"
+        xCfgScript="package/cfg/bin/server_pe674.cfg"
+        xCfgPrefix="package/cfg/bin/server_pe674"
+        cfgScript="server.cfg"
+        />
+    </executables>
+    <tests>
+    <test exeName="bin/server.xe674"
+        args=""
+        groupName="bin/server.xe674"
+        refOutput="undefined"
+        refExitCode="0"
+        execArgs=""
+        />
+    </tests>
+    <releases relDir="package/rel/">
+    <release name="server"
+        pname="server.zip"
+        label="default"
+    >
+        <file name="package/package.bld.xml"/>
+        <file name="package/package.ext.xml"/>
+        <file name="package/package.rel.dot"/>
+        <file name="package/build.cfg"/>
+        <file name="package/package.xdc.inc"/>
+        <file name="bin/server.xe674"/>
+    </release>
+    </releases>
+    <repositories>
+    </repositories>
+</package>
