@@ -1,5 +1,5 @@
 #
-_XDCBUILDCOUNT = 9
+_XDCBUILDCOUNT = 54
 ifneq (,$(findstring path,$(_USEXDCENV_)))
 override XDCPATH = /opt/vrmagic/sdk-4.3.3/D3/;;/opt/vrmagic/vrm-d3-ezsdk/component-sources/xdais_7_22_00_03/packages;/opt/vrmagic/vrm-d3-ezsdk/component-sources/bios_6_33_05_46/packages;/opt/vrmagic/vrm-d3-ezsdk/component-sources/linuxutils_3_22_00_02/packages;/opt/vrmagic/vrm-d3-ezsdk/component-sources/syslink_2_20_02_20/packages;/opt/vrmagic/vrm-d3-ezsdk/component-sources/osal_1_22_01_09/packages;/opt/vrmagic/vrm-d3-ezsdk/component-sources/framework_components_3_22_01_07/packages;/opt/vrmagic/vrm-d3-ezsdk/component-sources/ipc_1_24_03_32/packages;/opt/vrmagic/vrm-d3-ezsdk/component-sources/codec_engine_3_22_01_06/packages;
 override XDCROOT = /opt/ti/ti-ezsdk-5_05_02_00/component-sources/xdctools_3_23_03_53

@@ -18,7 +18,8 @@
 
 static IDirectFB *dfb = NULL;
 static IDirectFBSurface *primary = NULL;
-static IDirectFBSurface *surface[2];
+static const int num_back_buffers = 2;
+static IDirectFBSurface *surface[num_back_buffers];
 static IDirectFBEventBuffer *kb_buf = NULL;
 static IDirectFBInputDevice *keyboard= NULL;
 static IDirectFBFont *default_font= NULL;
@@ -133,7 +134,7 @@ bool SurfaceInit(VRmImageFormat f_format)
   }
  
   // Allocate contigous memory for surface buffer
-  for(int i=0;i<2;i++)
+  for(int i=0;i<num_back_buffers;i++)
   {
 	p_surface_buffer[i]= DspAllocMemory(l_surface_buffer_size);
 	if(!p_surface_buffer[i])

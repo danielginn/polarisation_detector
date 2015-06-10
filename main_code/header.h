@@ -25,13 +25,10 @@
 void LogExit();
 
 // function prototypes "initcamera.cpp"
-void initCamera(VRmUsbCamDevice device, VRmDWORD& port, VRmImageFormat& target_format, 
-				VRmDWORD screen_width, VRmDWORD screen_height, VRmColorFormat screen_format,
-				VRmRectI& source_cropping_region);
+void initCamera(VRmUsbCamDevice device, VRmDWORD& port, VRmImageFormat& target_format, VRmDWORD screen_width, VRmDWORD screen_height, VRmColorFormat screen_format, VRmRectI& source_cropping_region);
 
 // function prototypes "readcamera.cpp"
-void readCamera( VRmUsbCamDevice device,VRmDWORD port, VRmImageFormat target_format, 
-				VRmRectI source_cropping_region );
+void readCamera( VRmUsbCamDevice device,VRmDWORD port, VRmImageFormat target_format, VRmRectI source_cropping_region );
 
 // function prototypes "directfbwindow.cpp"
 bool WindowInit(VRmDWORD& f_screen_width, VRmDWORD& f_screen_height, VRmColorFormat& f_screen_colorformat);

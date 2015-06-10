@@ -13,9 +13,7 @@
 // Just for convenience
 using namespace std;
 
-void initCamera(VRmUsbCamDevice device, VRmDWORD& port, VRmImageFormat& target_format, 
-				VRmDWORD screen_width, VRmDWORD screen_height, VRmColorFormat screen_colorformat,
-				VRmRectI& src_cropping_region ) 
+void initCamera(VRmUsbCamDevice device, VRmDWORD& port, VRmImageFormat& target_format, VRmDWORD screen_width, VRmDWORD screen_height, VRmColorFormat screen_colorformat, VRmRectI& src_cropping_region ) 
 {
 	
 	// some examples for properties / camera settings
@@ -47,7 +45,7 @@ void initCamera(VRmUsbCamDevice device, VRmDWORD& port, VRmImageFormat& target_f
 		}
 	}
 
-	//now get the first sensor port
+	//now get the sensor ports
 	if(!VRmUsbCamGetSensorPortListEntry(device,0,&port))
 		LogExit();
 
