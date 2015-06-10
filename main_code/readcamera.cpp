@@ -32,6 +32,17 @@ void readCamera(VRmUsbCamDevice device, VRmDWORD port, VRmImageFormat target_for
 {	
 	// frames per second, shown on S-Video and on console
 	float fps= 0;
+	double savetime_start = 0;
+	double savetime_finish = 0;
+	double savetime = 0;
+	double savetimepercentage = 0;
+	double dspconverttime_start = 0;
+	double dspconverttime_finish = 0;
+	double dspconverttime = 0;
+	double dspconverttimepercentage = 0;
+	double looptime_start = 0;
+	double looptime_finish = 0;
+	double looptime = 0;
 
 	// the source image
 	VRmImage* p_source_img = 0;
@@ -61,6 +72,8 @@ void readCamera(VRmUsbCamDevice device, VRmDWORD port, VRmImageFormat target_for
 	int i = 0;
 	do
 	{
+		if(!VRmUsbCamGetCurrentTime(&looptime_start))
+					LogExit();
 		// Lock next (raw) image for read access, convert it to the desired
 		// format and unlock it again, so that grabbing can go on
 		VRmDWORD frames_dropped;
@@ -97,11 +110,18 @@ void readCamera(VRmUsbCamDevice device, VRmDWORD port, VRmImageFormat target_for
 			// Start the DSP conversion of the image 
 			// Note that this is an asynchronous call, i.e. the conversion is by no means 
 			// finished when the function returns
-			if(DspConvertImage(PROC_ASYNC, p_cropped_source_img, p_target_img[target_buffer_no]))
+			cout << "Starting DSP Image Conversion" << endl;
+			if(!VRmUsbCamGetCurrentTime(&dspconverttime_start))
+					LogExit();
+			if(DspConvertImage(PROC_SYNC, p_cropped_source_img, p_target_img[target_buffer_no]))
 			{
 				cout << "Encoding of buffer failed!" << endl; 
 				exit(-1);
 			}
+			if(!VRmUsbCamGetCurrentTime(&dspconverttime_finish))
+					LogExit();
+			cout << "Finished Image Conversion" << endl;
+			dspconverttime = dspconverttime_finish - dspconverttime_start;
 
 			// Show image on screen
 			// At first loop run we have no image to show, so skip this step
@@ -111,9 +131,10 @@ void readCamera(VRmUsbCamDevice device, VRmDWORD port, VRmImageFormat target_for
 			{
 				// Give the off-screen buffer back to dfb...
 				UnlockBuffer(!target_buffer_no);
-				// ...and update the screen
 				Update(!target_buffer_no,fps);
 
+				if(!VRmUsbCamGetCurrentTime(&savetime_start))
+					LogExit();
 				// Save image to file
 				char fileName[255];
 				if(i<10){
@@ -125,8 +146,11 @@ void readCamera(VRmUsbCamDevice device, VRmDWORD port, VRmImageFormat target_for
 				else{
 					sprintf(fileName, "image_%d.png", i);
 				}
-				cout << "Saving image: " << i << endl;
 				VRM_EXEC_AND_CHECK(VRmUsbCamSavePNG(fileName, p_target_img[target_buffer_no], 0));
+				if(!VRmUsbCamGetCurrentTime(&savetime_finish))
+					LogExit();	
+				cout << "Saving image: " << i << endl;
+				savetime = savetime_finish - savetime_start;
 			}
 			
 			// see, if we had to drop some frames due to data transfer stalls. if so,
@@ -145,12 +169,7 @@ void readCamera(VRmUsbCamDevice device, VRmDWORD port, VRmImageFormat target_for
 				frame_counter= 0;
 			}
 	
-			// Wait until DSP processing of the new image has been finished
-			if(DspConvertImage(PROC_WAIT, p_cropped_source_img, p_target_img[target_buffer_no]))
-			{
-				cout << "Encoding of buffer failed!" << endl;
-				exit(-1);
-			}
+
 			if(!VRmUsbCamFreeImage(&p_cropped_source_img))
 			{
 				LogExit();
@@ -168,6 +187,18 @@ void readCamera(VRmUsbCamDevice device, VRmDWORD port, VRmImageFormat target_for
 			target_buffer_no= !target_buffer_no;
 		}
 		i = i+1;
+		if(!VRmUsbCamGetCurrentTime(&looptime_finish))
+			LogExit();
+		cout << "Looping" << endl;
+		looptime = looptime_finish - looptime_start;
+		dspconverttimepercentage = (dspconverttime/looptime)*100;
+		if(savetime < 0.1)
+			savetimepercentage = 0;
+		else
+			savetimepercentage = (savetime/looptime)*100;
+		cout << "Times:" << endl;
+		cout << "DSP Conversion Time: " << dspconverttime << " (" << dspconverttimepercentage << ")" << endl;
+		cout << "Save Time: " << savetime << " (" << savetimepercentage << ")" << endl;
 	} while (!Quit() && !g_quit);
 
 	// Unlock the dfb buffer which is still locked
