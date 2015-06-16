@@ -18,7 +18,7 @@
 
 static IDirectFB *dfb = NULL;
 static IDirectFBSurface *primary = NULL;
-static const int num_back_buffers = 2;
+static const int num_back_buffers = 6;
 static IDirectFBSurface *surface[num_back_buffers];
 static IDirectFBEventBuffer *kb_buf = NULL;
 static IDirectFBInputDevice *keyboard= NULL;
@@ -26,7 +26,7 @@ static IDirectFBFont *default_font= NULL;
 static int screen_width  = 0;
 static int screen_height = 0;
 
-static void* p_surface_buffer[2];
+static void* p_surface_buffer[num_back_buffers];
 static int l_surface_buffer_size;
 
 struct termios initial_settings, new_settings;
@@ -136,6 +136,7 @@ bool SurfaceInit(VRmImageFormat f_format)
   // Allocate contigous memory for surface buffer
   for(int i=0;i<num_back_buffers;i++)
   {
+  	cout << "Allocating contigous memory for surface buffer" << endl;
 	p_surface_buffer[i]= DspAllocMemory(l_surface_buffer_size);
 	if(!p_surface_buffer[i])
 	{

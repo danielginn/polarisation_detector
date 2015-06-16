@@ -13,7 +13,7 @@
 // Just for convenience
 using namespace std;
 
-void initCamera(VRmUsbCamDevice device, VRmDWORD& port, VRmImageFormat& target_format, VRmDWORD screen_width, VRmDWORD screen_height, VRmColorFormat screen_colorformat, VRmRectI& src_cropping_region ) 
+void initCamera(VRmUsbCamDevice device, VRmDWORD& port1, VRmDWORD& port2, VRmDWORD& port3, VRmImageFormat& target_format, VRmDWORD screen_width, VRmDWORD screen_height, VRmColorFormat screen_colorformat, VRmRectI& src_cropping_region ) 
 {
 	
 	// some examples for properties / camera settings
@@ -27,26 +27,30 @@ void initCamera(VRmUsbCamDevice device, VRmDWORD& port, VRmImageFormat& target_f
 	// for this demo we switch off all connected sensor but the first one in the port list
 	for(VRmDWORD ii=0; ii<num_sensorports;ii++)
 	{
-		if(!VRmUsbCamGetSensorPortListEntry(device,ii,&port))
+		if(!VRmUsbCamGetSensorPortListEntry(device,ii,&port1))
 			LogExit();
 
 		// on single sensor devices this property does not exist
-		VRmPropId sensor_enable = (VRmPropId)(VRM_PROPID_GRAB_SENSOR_ENABLE_1_B-1+port);
+		VRmPropId sensor_enable = (VRmPropId)(VRM_PROPID_GRAB_SENSOR_ENABLE_1_B-1+port1);
 		if(!VRmUsbCamGetPropertySupported(device,sensor_enable,&supported))
 			LogExit();
 		if(supported)
 		{
 			//enable first sensor in port list
 			VRmBOOL enable = 1;
-			if(ii) 
-				enable = 0;
+			//if(ii) 
+			//	enable = 0;
 			if(!VRmUsbCamSetPropertyValueB(device,sensor_enable,&enable))
 				LogExit();
 		}
 	}
 
 	//now get the sensor ports
-	if(!VRmUsbCamGetSensorPortListEntry(device,0,&port))
+	if(!VRmUsbCamGetSensorPortListEntry(device,0,&port1))
+		LogExit();
+	if(!VRmUsbCamGetSensorPortListEntry(device,1,&port2))
+		LogExit();
+	if(!VRmUsbCamGetSensorPortListEntry(device,2,&port3))
 		LogExit();
 
 	//check if exposure time can be set
@@ -63,7 +67,7 @@ void initCamera(VRmUsbCamDevice device, VRmDWORD& port, VRmImageFormat& target_f
 
 	// Get the current source format (only for user info)
 	VRmImageFormat source_format;
-	if (!VRmUsbCamGetSourceFormatEx(device,port,&source_format))
+	if (!VRmUsbCamGetSourceFormatEx(device,port1,&source_format))
 		LogExit();
 	
 	const char *source_color_format_str;
@@ -80,12 +84,12 @@ void initCamera(VRmUsbCamDevice device, VRmDWORD& port, VRmImageFormat& target_f
     // We search for the color format of the connected screen, since this is the format
 	// which can be displayed by the Davinci.
 	VRmDWORD number_of_target_formats, i;
-	if (!VRmUsbCamGetTargetFormatListSizeEx2( device, port, &number_of_target_formats ) )
+	if (!VRmUsbCamGetTargetFormatListSizeEx2( device, port1, &number_of_target_formats ) )
 		LogExit();
 
 	for (i= 0; i < number_of_target_formats; ++i )
 	{
-		if(!VRmUsbCamGetTargetFormatListEntryEx2(device,port,i,&target_format))
+		if(!VRmUsbCamGetTargetFormatListEntryEx2(device,port1,i,&target_format))
 			LogExit();
 		if ( target_format.m_color_format == screen_colorformat )
 			break;

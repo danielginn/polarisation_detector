@@ -106,9 +106,11 @@ int main(int argc, char** argv)
 	cout << "Screen colour format: " << screen_colorformat << endl << endl;
 
 	VRmImageFormat target_format;
-	VRmDWORD port=0;
+	VRmDWORD port1=0;
+	VRmDWORD port2=0;
+	VRmDWORD port3=0;
 	VRmRectI source_cropping_region = {0,0,0,0};
-	initCamera(device,port,target_format,screen_width,screen_height,screen_colorformat,source_cropping_region);
+	initCamera(device,port1,port2,port3,target_format,screen_width,screen_height,screen_colorformat,source_cropping_region);
 	
 	// Initialize Codec Engine and create Codecs
 	if(DspInit())
@@ -132,7 +134,7 @@ int main(int argc, char** argv)
 	signal(SIGINT,GotSignal);
 
     // and read pictures...
-	readCamera(device,port,target_format,source_cropping_region);
+	readCamera(device,port1,port2,port3,target_format,source_cropping_region);
 
 
 	// close the device
