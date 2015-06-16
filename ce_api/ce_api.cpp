@@ -138,7 +138,7 @@ void DspExit()
 int DspConvertImage(dsp_cmd cmd, VRmImage *vrm_source, VRmImage *vrm_target)
 {
 	int i;
-
+	printf("Successfully called DspConvertImage\n"); 
 	VRMCODEC_InArgs	inArgs;
 	inArgs.size = sizeof(inArgs);
 
@@ -150,11 +150,13 @@ int DspConvertImage(dsp_cmd cmd, VRmImage *vrm_source, VRmImage *vrm_target)
 
 	const VRmBYTE* source_lut;
 	VRmDWORD lut_size;
+	printf("Beginning GetImageLut\n");
 	if(!VRmUsbCamGetImageLut(vrm_source, &source_lut, &lut_size))
 	{
 		printf("DspConvertImage(): VRmUsbCamGetImageLut(vrm_source, &source_lut, &lut_size) failed\n");
 		return -1;
 	}
+	printf("Finished GetImageLut...Getting Image Buffer size\n");
 
 	// define the arrays describing I/O buffers and their sizes
 	XDM1_BufDesc sourceDesc;
@@ -165,7 +167,7 @@ int DspConvertImage(dsp_cmd cmd, VRmImage *vrm_source, VRmImage *vrm_target)
 		printf("VRmUsbCam Error1: %s", VRmUsbCamGetLastError());
 		return -1;
 	}
-
+	printf("Finished Get Image Buffer size\n");
 	sourceDesc.descs[1].buf			= (XDAS_Int8*)p_source_img_handle;
 	sourceDesc.descs[1].bufSize		= *(XDAS_Int32*)p_source_img_handle;
 
@@ -184,6 +186,7 @@ int DspConvertImage(dsp_cmd cmd, VRmImage *vrm_source, VRmImage *vrm_target)
 	XDM1_BufDesc targetDesc;
 	targetDesc.numBufs				= 1;
     targetDesc.descs[0].buf			= (XDAS_Int8*)vrm_target->mp_buffer;
+    printf("Getting Image Buffer size 2nd time\n");
 	if(!VRmUsbCamGetImageBufferSize(vrm_target, (VRmDWORD*)&targetDesc.descs[0].bufSize))
 	{
 		printf("VRmUsbCam Error2: %s", VRmUsbCamGetLastError());
@@ -201,6 +204,7 @@ int DspConvertImage(dsp_cmd cmd, VRmImage *vrm_source, VRmImage *vrm_target)
 	}
 
     // encode the frame, pass addresses of the structures we populated above
+    printf("Encoding frame...\n");
 	Int32 status=-1;
 	switch(cmd)
 	{
@@ -216,7 +220,7 @@ int DspConvertImage(dsp_cmd cmd, VRmImage *vrm_source, VRmImage *vrm_target)
 	default:
 		printf("DspconvertImage(): Unknown command %d\n", cmd);
 	}
-
+	printf("Switching Status\n");
 	switch(status)
 	{
 	case IMGENC1_EOK:
