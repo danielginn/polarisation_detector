@@ -8,6 +8,7 @@
 #include "vrmusbcam2.h"
 #include <sstream>
 #include <iostream>
+#include <fstream>
 #include <sstream>
 #include <iomanip>
 #include <cstdlib>
@@ -34,6 +35,15 @@ void readCamera(VRmUsbCamDevice device, VRmDWORD port1, VRmDWORD port2, VRmDWORD
 	// frames per second, shown on S-Video and on console
 	float fps= 0;
 	// Setting up GPIO pin
+	fstream fs;
+	fs.open("/sys/class/gpio/export");
+	fs.write("36",2);
+	fs.close();
+	fs.open("/sys/class/gpio/gpio36/direction");
+	fs.write("out",3);
+	fs.close();
+	fs.open("/sys/class/gpio/gpio36/value");
+	fs.write("0",1); // "1" for on
 
 	// the source image
 	VRmImage* p_source_img1 = 0;
@@ -92,9 +102,15 @@ void readCamera(VRmUsbCamDevice device, VRmDWORD port1, VRmDWORD port2, VRmDWORD
 
 	cout << "Reading from camera..." << endl;
 	int i = 0;
+	int flip = 0;
 	do
-	{
-		
+	{;
+		if (flip==0)
+			fs.write("1",1);
+		else
+			fs.write("0",1);
+		flip = !flip;
+
 		VRM_EXEC_AND_CHECK(VRmUsbCamGetCurrentTime(&looptime_start));
 		// Lock next (raw) image for read access, convert it to the desired
 		// format and unlock it again, so that grabbing can go on
@@ -249,7 +265,7 @@ void readCamera(VRmUsbCamDevice device, VRmDWORD port1, VRmDWORD port2, VRmDWORD
 		}
 		i = i+1;
 	} while (!Quit() && !g_quit);
-
+	fs.close();
 	// Unlock the dfb buffer which is still locked
 	UnlockBuffer(!target_buffer_no);
 
